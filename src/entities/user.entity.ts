@@ -17,7 +17,7 @@ export class User {
   name: string;
 
   @Column({ nullable: false, unique: true })
-  email2: string;
+  email: string;
 
   @Column({ nullable: false })
   password: string;
@@ -27,6 +27,6 @@ export class User {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
   }
 }

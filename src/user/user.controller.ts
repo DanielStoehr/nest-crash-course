@@ -1,14 +1,40 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateUserDto } from './dto/createUserDto';
+import { UserService } from './user.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Controller('user')
 export class UserController {
+  constructor(
+    private userService: UserService,
+    private commentService: CommentService,
+  ) {}
+
   @Get(':id')
-  findAll(@Param('id') id: string) {
-    return { user: { id: id } };
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(id);
   }
 
   @Post()
-  create(@Body('name') name: string) {
-    return 'the username is ' + name;
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
+
+  @Get(':id/comments')
+  getUserComment(@Param('id') id: string) {
+    return this.commentService.findUsercomments(id);
+  }
+
+  // @Patch()
+  // @Put()
+  // @Delete()
 }
